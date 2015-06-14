@@ -48,7 +48,9 @@ public class PagerSlidingTabStrip extends HorizontalScrollView {
 	public interface IconTabProvider {
 		public int getPageIconResId(int position);
 	}
-
+	public interface IconWithTextTabProvider {
+		public int getPageIconWithTextResId(int position);
+	}
 	// @formatter:off
 	private static final int[] ATTRS = new int[] {
 		android.R.attr.textSize,
@@ -196,6 +198,9 @@ public class PagerSlidingTabStrip extends HorizontalScrollView {
 
 			if (pager.getAdapter() instanceof IconTabProvider) {
 				addIconTab(i, ((IconTabProvider) pager.getAdapter()).getPageIconResId(i));
+			} 
+			if (pager.getAdapter() instanceof IconWithTextTabProvider) {
+				addIconWithTextTab(i, ((IconWithTextTabProvider)pager.getAdapger()).getPageIconWithTextResId(i));
 			} else {
 				addTextTab(i, pager.getAdapter().getPageTitle(i).toString());
 			}
@@ -242,7 +247,12 @@ public class PagerSlidingTabStrip extends HorizontalScrollView {
 		addTab(position, tab);
 
 	}
-
+	
+	private void addIconTabWithText(final int position, int resId) {
+		LinearLayout tab = getLayoutInflater().inflate(resId);
+		addTab(position, tab);
+	}
+	
 	private void addTab(final int position, View tab) {
 		tab.setFocusable(true);
 		tab.setOnClickListener(new OnClickListener() {
